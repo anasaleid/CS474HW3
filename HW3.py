@@ -1,6 +1,6 @@
 import sys
 import Person
-
+import Group
 
 line = input("Choose an option:")
 pList = []
@@ -30,6 +30,7 @@ while line != "-1":
 
     elif line == "2":
         selected = 0
+        newGroup = Group.Group(None, None)
         while selected != "-1":
             for x in pList:
                 if x.assigned is False:
@@ -40,15 +41,54 @@ while line != "-1":
             selected = input("Which person would you like to add to the new group? (-1 to finish adding people) :")
             for x in pList:
                 if str(x.attributes["id"]) == selected:
-                    gList.append(x)
+                    newGroup.listOfPeople.append(x)
                     x.assigned = True
 
+        gList.append(newGroup)
+
     elif line == "3":
-        pass
+        groupID = input("Which group would you like to modify?")
+        addOrRemove = input("would you like to ADD or Remove members?")
+        selectedGroup = gList[0]
+        selectedPerson = 0
+        for x in gList:
+            if str(x.id) == groupID:
+                selectedGroup = x
+        if addOrRemove == "ADD":
+            while selectedPerson != "-1":
+                for x in pList:
+                    if x.assigned is False:
+                        print(str(x.attributes["id"]) + " " + str(x.attributes["firstName"]) + " " + str(x.attributes["lastName"]))
+                selectedPerson = input("Which person would you like to add from the group? (-1 to finish):")
+                if selectedPerson == "-1":
+                    break
+                else:
+                    for x in pList:
+                        if str(x.attributes["id"]) == selectedPerson:
+                            selectedGroup.listOfPeople.append(x)
+        elif addOrRemove == "REMOVE":
+            while selectedPerson != "-1":
+                for x in selectedGroup.listOfPeople:
+                    print(str(x.attributes["id"]) + " " + str(x.attributes["firstName"]) + " " + str(x.attributes["lastName"]))
+                selectedPerson = input("Which person would you like to add from the group? (-1 to finish):")
+                if selectedPerson == "-1":
+                    break
+                else:
+                    for x in selectedGroup.listOfPeople:
+                        if str(x.attributes["id"]) == selectedPerson:
+                            selectedGroup.listOfPeople.remove(x)
+                            x.assigned = False
     elif line == "4":
-        pass
+        list = ["firstName", "lastName", "id"]
+        for x in pList:
+            x.validate(list)
+        for x in gList:
+            x.validate()
     elif line == "5":
-        pass
+        for x in gList:
+            print("Group " + str(x.id))
+            for y in x.listOfPeople:
+                print(str(y.attributes["firstName"]) + " " + str(y.attributes["lastName"]))
 
     line = input("Choose an option:")
 

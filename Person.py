@@ -1,12 +1,13 @@
 class Person:
+
     numPeople = 1
     def validate(self, listOfAttributes):
         if not listOfAttributes:
             if self.assigned is False:
-                print(self.name + " does not have an assigned group.")
+                print(self.attributes["firstName"] + " " + self.attributes["lastName"] + " does not have an assigned group.")
         else:
             for x in listOfAttributes:
-                if x in self.dictionary:
+                if x in self.attributes:
                     pass
                 else:
                     print("Attribute " + x + " is missing")
